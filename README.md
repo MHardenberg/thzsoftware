@@ -12,8 +12,9 @@ All code contained in the project should by:
 	
 	
 To Do:
-	- Finnish tds tool boxes.
-	- Write documentation:
+
+	* Finnish tds tool boxes.
+	* Write documentation:
 		* For all functions
 		* How to alter functions
 		* How to add functions / tool boxes
@@ -21,5 +22,6 @@ To Do:
 
 
 Tutorials:
-	- virtual environments and how to use 'venv': https://python.land/virtual-environments/virtualenv
+
+	* virtual environments and how to use 'venv': https://python.land/virtual-environments/virtualenv
 		The current version employs venv and only has to be actived when modifing the code.
