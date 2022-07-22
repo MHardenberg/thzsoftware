@@ -18,7 +18,7 @@ def fft(amplitude_array, sample_rate, pad=None):
         amplitude_array = np.pad(amplitude_array, (0, pad), mode="constant")
         
     amplitude_transform = ft.fft(amplitude_array)[:n // 2]
-    argument_transform = ft.fftfreq(n, sample_rate)[:n // 2]
+    argument_transform = ft.fftfreq(n, sample_rate**-1)[:n // 2]
 
     return argument_transform, amplitude_transform
 
