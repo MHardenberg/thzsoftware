@@ -1,4 +1,7 @@
 # thzsoftware
+## This library is not finnished. 
+
+
 This is the codebase for THz Photonics group at Aarhus University. It includes python code for data analysis of THz time domain spectroscopy (TDS) and
 later other methods. The intention is to develop a specialized tool box, or library, in python for the data analysis we commonly employ. E.g. tds in transmission and reflection, and later even the machine learning scripts for classifying plastics. This should save time and ensure a higher standard of quality, as it is tested and maintained by the members of the group. Opposed to everyone just writing their own quick scripts over and over again.
 
