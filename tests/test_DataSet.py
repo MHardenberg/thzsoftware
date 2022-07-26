@@ -1,3 +1,5 @@
+import os
+import shutil
 import pandas as pd
 from thzsoftware.data import DataSet
 
@@ -34,7 +36,9 @@ def test_dataset_obj_add_entry():
 
 
 def test_dataset_obj_get_keys():
-    test_set = DataSet("./tests/test_dummy_data/dataDir/", "dummy_type")
+    data_path = "./tests/test_dummy_data/dataDir/"
+    data_type = "dummy_type"
+    test_set = DataSet(data_path, data_type)
     keys = test_set.get_keys()
 
     dir_key = "measurements_6th_september"
@@ -45,3 +49,19 @@ def test_dataset_obj_get_keys():
     assert dir_key in keys, "dir_key not listed."
     assert measurement_key in keys[dir_key], "measurement key not listed."
     assert type_key in keys[dir_key][measurement_key], "type key not listed."
+
+
+def test_dataset_obj_save_to_csv():
+    data_path = "./tests/test_dummy_data/dataDir/"
+    data_type = "dummy_type"
+    test_set = DataSet(data_path, data_type)
+    output_path = "./tests/tmp/test_dummy_saved"
+    test_set.save_to_csv(output_path)
+
+    assert os.path.exists(output_path), AssertionError("No directory created.")
+    contents_output = os.listdir(output_path)
+    contents_data = os.listdir(data_path)
+    for content in contents_data:
+        assert content in contents_output, AssertionError("Contents not present.")
+
+    shutil.rmtree(output_path)  # remove temporary save
