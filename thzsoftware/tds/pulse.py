@@ -101,7 +101,7 @@ def define_thz_pulses(ys, number_of_pulses=1):
             # from the first crossing after the dominant peak.
 
             right_limit = zero_crossings[zero_crossings > peak][0]
-            right_limit = zero_crossings[zero_crossings > (right_limit + (peak-left_min))][0]
+            right_limit = zero_crossings[zero_crossings > (right_limit + 4)][0]
 
         # make sure the indices are valid:
         left_limit = max(0, left_limit)

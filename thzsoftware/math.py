@@ -26,40 +26,35 @@ def shift_array(array, shift, fill_value=0):
 # polar form of complex vector:
 def carthesian_to_polar(complex_array, tolerance=1e-16):
     assert isinstance(complex_array, np.ndarray), TypeError("'complex_array' must be numpy.array.")
-    assert isinstance(tolerance, (int, float)), TypeError("'Tol' kwarg must be int of float.")
+    assert isinstance(tolerance, (int, float)), TypeError("'tolerance' kwarg must be int of float. type(tolerance) = "
+                                                          f"{type(tolerance)}")
 
-    r = np.abs(complex_array)
+    c_arr = complex_array.copy()  # avoid messing with array outside function
+    r = np.abs(c_arr)
     # There is a complexity issue, where the imaginary part can actually be set to zero within the numpy function.
     # to avoid this we find the poles:
-    poles = np.where(np.abs(complex_array.imag) < tolerance)
-    complex_array.imag[poles] = 1  # will be corrected by setting phase to pi/2
+    poles = np.where(np.abs(c_arr.imag) < tolerance)
+    c_arr.imag[poles] = 1  # will be corrected by setting phase to pi/2
 
-    phi = np.arctan(complex_array.imag / complex_array.real)
-    phi[poles] = .5 * np.pi * np.sign(complex_array.real[poles] * complex_array.imag[poles])  # correct the poles
+    phi = np.arctan(c_arr.imag / c_arr.real)
+    phi[poles] = .5 * np.pi * np.sign(c_arr.real[poles] * c_arr.imag[poles])  # correct the poles
 
     return r, phi
 
 
 def unwrap_angles(angles):  # by convention, we assume decreasing phase
-    reduce = 0
-    out = np.zeros(angles.shape)
-    counter = 1
+    assert isinstance(angles, (list, tuple, np.ndarray)), TypeError("Input must be array-like. type(angles) "
+                                                                    f"= {type(angles)}")
+    if angles.dtype == np.int32 or angles.dtype == np.int64:
+        angles = angles.astype(np.float64)
+
     if angles[0] > 0:
-        angles -= reduce
+        angles -= 2 * np.pi
 
-    previous = angles[0]
-    out[0] = previous
-
-    for angle in angles[1:]:
-        angle -= reduce  # this is equivalent to reducing angles[n:] by 2*pi for every shift
-        while angle > previous:
-            angle -= 2 * np.pi
-            reduce += 2 * np.pi
-
-        previous = angle
-        out[counter] = angle
-        counter += 1
-    return out
+    for i in range(1, len(angles)):
+        while angles[i] > angles[i - 1]:
+            angles[i] -= 2 * np.pi
+    return angles
 
 
 def zero_crossings(input_array, find_index="before"):
@@ -75,4 +70,3 @@ def zero_crossings(input_array, find_index="before"):
     elif find_index == "after":
         out = np.where(np.diff(np.sign(input_array)))[0] + 1
     return out
-
