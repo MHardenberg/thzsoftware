@@ -26,7 +26,7 @@ def convolve(base, mask, dx=1):
 
 # use convolution method to find the highest degrees of overlap between a pulse and a time trace. Multiple pulse can be
 # found, when e.g. looking for echos.
-def find_pulse(pulse, time_trace, pulse_width_indices, number_of_pulses=1):
+def find_delayed_pulse(pulse, time_trace, pulse_width_indices, number_of_pulses=1):
     _, conv = convolve(time_trace, pulse)
     peaks, _ = find_peaks(conv)
     peaks = peaks[np.argsort(conv[peaks])]  # sort peaks by size.

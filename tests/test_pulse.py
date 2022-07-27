@@ -42,13 +42,13 @@ def test_define_thz_pulses():
     assert h.within_tolerance(coverage, 1, 5*1e-2), ValueError("Not enough pulse coverage.")
 
 
-def test_find_pulse():
+def test_find_delayed_pulse():
     length = 50
     pulse = np.zeros(length)
     pulse[15:20] = 1
 
     time_trace = mt.shift_array(pulse, -10) + mt.shift_array(pulse, 5)
-    pulses = pt.find_pulse(pulse, time_trace, 5, number_of_pulses=2)
+    pulses = pt.find_delayed_pulse(pulse, time_trace, 5, number_of_pulses=2)
 
     assert pulses[0] == length - 10 and pulses[1] == length + 5, "Pulse location inaccurate."
 
