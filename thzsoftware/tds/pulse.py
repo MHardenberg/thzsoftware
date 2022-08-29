@@ -29,8 +29,28 @@ def convolve(base, mask, dx=1):
 def find_delayed_pulse(pulse, time_trace, pulse_width_indices, number_of_pulses=1):
     _, conv = convolve(time_trace, pulse)
     peaks, _ = find_peaks(conv)
-    peaks = peaks[np.argsort(conv[peaks])]  # sort peaks by size.
 
+    out = [0] * number_of_pulses
+    out_magnitude = [0] * number_of_pulses
+
+    for i, peak in enumerate(peaks):
+        peak_magnitude = conv[peak]
+        if peak_magnitude > out_magnitude[-1]:  # if peak is greater than least pulse.
+            for j, observed_magnitude in enumerate(out_magnitude):
+                if out[j] - pulse_width_indices // 2 < peak < out[j] + pulse_width_indices // 2:  # guard against too
+                    # close peaks (of the same pulse)
+                    break
+
+                if observed_magnitude < peak_magnitude:
+                    out_magnitude[j] = peak_magnitude
+                    out[j] = peak
+                    break  # no point continue looping
+
+
+
+    '''
+    peaks = peaks[np.argsort(conv[peaks])]  # sort peaks by size.
+    print(conv[peaks][0:5])
     out = []
     counter = 0
     while len(out) < number_of_pulses:  # for number of pulses, we find the highest, and then discard any of the
@@ -42,8 +62,8 @@ def find_delayed_pulse(pulse, time_trace, pulse_width_indices, number_of_pulses=
                 within_pulse = True
         if not within_pulse:
             out.extend([peak])
-        counter += 1
-    return peaks
+        counter += 1'''
+    return out, conv
 
 
 def find_peaks(pulse):
