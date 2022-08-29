@@ -45,24 +45,7 @@ def find_delayed_pulse(pulse, time_trace, pulse_width_indices, number_of_pulses=
                     out_magnitude[j] = peak_magnitude
                     out[j] = peak
                     break  # no point continue looping
-
-
-
-    '''
-    peaks = peaks[np.argsort(conv[peaks])]  # sort peaks by size.
-    print(conv[peaks][0:5])
-    out = []
-    counter = 0
-    while len(out) < number_of_pulses:  # for number of pulses, we find the highest, and then discard any of the
-        # following, which are to close to it. These are assumed to be part of the same peak.
-        peak = peaks[counter]
-        within_pulse = False
-        for earlier_peak in out:
-            if (earlier_peak - pulse_width_indices / 2) < peak < (earlier_peak + pulse_width_indices / 2):
-                within_pulse = True
-        if not within_pulse:
-            out.extend([peak])
-        counter += 1'''
+                    
     return out, conv
 
 
